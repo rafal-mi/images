@@ -24,7 +24,7 @@ class SearchPagingSource(
                     // It serves the same page again and again even if we increase the page index
                     //
                     val endOfPaginationReached = response.data.images.isEmpty() || response.data.images.size < PAGE_SIZE
-                    
+
                     if (response.data.images.isNotEmpty()) {
                         LoadResult.Page(
                             data = response.data.images,
