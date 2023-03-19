@@ -7,6 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.pinczow.images.data.db.AppDatabase
+import org.pinczow.images.data.net.RestApi
+import org.pinczow.images.data.net.RestApiImpl
 import javax.inject.Singleton
 
 @Module
@@ -21,4 +23,10 @@ object AppModule {
             "app.db"
         ).build()
     }
+
+    @Provides
+    @Singleton
+    fun provideRestApi(): RestApi =
+        RestApiImpl()
+
 }
