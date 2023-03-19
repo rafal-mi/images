@@ -22,7 +22,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.paging.compose.LazyPagingItems
@@ -71,7 +70,7 @@ fun UnsplashItem(
     onIconClick: () -> Unit
 ) {
     val painter = rememberImagePainter(data = image.urls.regular) {
-        crossfade(durationMillis = 1000)
+        crossfade(durationMillis = 3000)
         error(R.drawable.ic_placeholder)
         placeholder(R.drawable.ic_placeholder)
     }
