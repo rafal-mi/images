@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.pinczow.images.Constants.PAGE_SIZE
 import org.pinczow.images.data.db.AppDatabase
+import org.pinczow.images.data.db.entity.ImageEntity
 import org.pinczow.images.data.net.RestApi
 import org.pinczow.images.data.paging.UnsplashRemoteMediator
 import org.pinczow.images.feature.image.domain.model.ImageModel
@@ -31,4 +32,11 @@ class ImageRepositoryImpl @Inject constructor(
                 }
         }
     }
+
+    override suspend fun toggleFavorite(image: ImageModel) {
+        val newImage = image.copy()
+        newImage.favorite = image.favorite
+        database.imageDao().updateOne(ImageEntity(newImage))
+    }
+
 }

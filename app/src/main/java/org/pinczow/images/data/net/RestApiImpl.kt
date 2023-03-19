@@ -5,7 +5,8 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.resources.*
+import io.ktor.client.request.*
+// import io.ktor.client.plugins.resources.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.pinczow.images.BuildConfig
@@ -19,6 +20,7 @@ const val BASE_URL = "https://api.unsplash.com"
 class RestApiImpl: RestApi {
     override suspend fun getImages(page: Int, perPage: Int): Resource<List<ImageModel>> {
         val client = HttpClient(Android) {
+            // install(Resources)
             install(DefaultRequest) {
                 headers.append("Accept", "application/json")
                 headers.append("Authorization", "Client-ID ${BuildConfig.API_KEY}")
@@ -27,6 +29,7 @@ class RestApiImpl: RestApi {
                 json(Json {
                     prettyPrint = true
                     isLenient = true
+                    ignoreUnknownKeys = true
                 })
             }
         }

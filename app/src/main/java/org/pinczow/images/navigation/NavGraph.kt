@@ -5,9 +5,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.paging.ExperimentalPagingApi
 import org.pinczow.images.feature.image.presentation.images.ImagesScreen
 import org.pinczow.images.feature.image.presentation.images.SearchScreen
 
+@OptIn(ExperimentalPagingApi::class)
 @Composable
 fun AppNavGraph(navController: NavHostController) {
     NavHost(
