@@ -5,7 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import org.pinczow.images.Constants.ITEMS_PER_PAGE
+import org.pinczow.images.Constants.PAGE_SIZE
 import org.pinczow.images.data.Resource
 import org.pinczow.images.data.db.AppDatabase
 import org.pinczow.images.data.db.entity.ImageEntity
@@ -17,14 +17,14 @@ import org.pinczow.images.feature.image.domain.model.ImageModel
 class UnsplashRemoteMediator(
     private val restApi: RestApi,
     private val database: AppDatabase
-) : RemoteMediator<Int, ImageModel>() {
+) : RemoteMediator<Int, ImageEntity>() {
 
     private val imageDao = database.imageDao()
     private val remoteKeysDao = database.remoteKeysDao()
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, ImageModel>
+        state: PagingState<Int, ImageEntity>
     ): MediatorResult {
         return try {
             val currentPage = when (loadType) {
@@ -50,7 +50,7 @@ class UnsplashRemoteMediator(
                 }
             }
 
-            val response = restApi.getImages(page = currentPage, perPage = ITEMS_PER_PAGE)
+            val response = restApi.getImages(page = currentPage, perPage = PAGE_SIZE)
             when(response) {
                 is Resource.Success -> {
                     val endOfPaginationReached = response.data.isNotEmpty()
@@ -93,7 +93,7 @@ class UnsplashRemoteMediator(
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, ImageModel>
+        state: PagingState<Int, ImageEntity>
     ): RemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->
@@ -103,7 +103,7 @@ class UnsplashRemoteMediator(
     }
 
     private suspend fun getRemoteKeyForFirstItem(
-        state: PagingState<Int, ImageModel>
+        state: PagingState<Int, ImageEntity>
     ): RemoteKeys? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { unsplashImage ->
@@ -112,7 +112,7 @@ class UnsplashRemoteMediator(
     }
 
     private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, ImageModel>
+        state: PagingState<Int, ImageEntity>
     ): RemoteKeys? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { unsplashImage ->

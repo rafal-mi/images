@@ -1,5 +1,5 @@
 package org.pinczow.images
 
 object Constants {
-    const val ITEMS_PER_PAGE = 10
+    const val PAGE_SIZE = 10
 }
