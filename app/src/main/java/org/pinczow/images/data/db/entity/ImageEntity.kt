@@ -14,13 +14,14 @@ data class ImageEntity(
     val likes: Int,
     @Embedded
     val user: User,
-//    @Transient
-//    val favorite: Boolean = false
+    @Transient
+    val favorite: Boolean = false
 ) {
     constructor(that: ImageModel) : this(
         id = that.id,
         urls = that.urls.copy(),
         likes = that.likes,
-        user = that.user. copy()
+        user = that.user. copy(),
+        favorite = that.favorite
     )
 }

@@ -12,12 +12,15 @@ data class ImageModel(
     val id: String,
     val urls: Urls,
     val likes: Int,
-    val user: User
+    val user: User,
+    @Transient
+    val favorite: Boolean = false
     ) {
     constructor(that: ImageEntity) : this(
         id = that.id,
         urls = that.urls.copy(),
         likes = that.likes,
-        user = that.user. copy()
+        user = that.user. copy(),
+        favorite = that.favorite
     )
 }
