@@ -15,11 +15,16 @@ class SearchPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImageModel> {
         val currentPage = params.key ?: 1
         return try {
-            val response = restApi.search(query = query, perPage = PAGE_SIZE)
+            val response = restApi.search(query = query, page = currentPage, perPage = PAGE_SIZE)
 
             return when(response) {
                 is Resource.Success -> {
-                    val endOfPaginationReached = response.data.images.isEmpty()
+                    //
+                    // The alternative condition because the API is broken.
+                    // It serves the same page again and again even if we increase the page index
+                    //
+                    val endOfPaginationReached = response.data.images.isEmpty() || response.data.images.size < PAGE_SIZE
+                    
                     if (response.data.images.isNotEmpty()) {
                         LoadResult.Page(
                             data = response.data.images,

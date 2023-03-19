@@ -48,7 +48,7 @@ class RestApiImpl: RestApi {
         }
     }
 
-    override suspend fun search(query: String, perPage: Int): Resource<SearchResponse> {
+    override suspend fun search(query: String, page: Int, perPage: Int): Resource<SearchResponse> {
         val url = "$BASE_URL/search/photos"
 
         return try {
