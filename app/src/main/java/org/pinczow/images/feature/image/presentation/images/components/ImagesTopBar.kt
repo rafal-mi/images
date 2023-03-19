@@ -14,7 +14,7 @@ fun ImagesTopBar(
     TopAppBar(
         title = {
             Text(
-                text = "Home",
+                text = "Images",
                 color = MaterialTheme.colors.topAppBarContentColor
             )
         },

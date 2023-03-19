@@ -6,5 +6,5 @@ import org.pinczow.images.feature.image.domain.model.ImageModel
 
 interface RestApi {
     suspend fun getImages(page: Int, perPage: Int): Resource<List<ImageModel>>
-    suspend fun search(): SearchResponse
+    suspend fun search(query: String, perPage: Int): Resource<SearchResponse>
 }

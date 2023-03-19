@@ -7,6 +7,7 @@ import org.pinczow.images.Constants.PAGE_SIZE
 import org.pinczow.images.data.db.AppDatabase
 import org.pinczow.images.data.db.entity.ImageEntity
 import org.pinczow.images.data.net.RestApi
+import org.pinczow.images.data.paging.SearchPagingSource
 import org.pinczow.images.data.paging.UnsplashRemoteMediator
 import org.pinczow.images.feature.image.domain.model.ImageModel
 import org.pinczow.images.feature.image.domain.repository.ImageRepository
@@ -31,6 +32,15 @@ class ImageRepositoryImpl @Inject constructor(
                     ImageModel(it)
                 }
         }
+    }
+
+    override fun search(query: String): Flow<PagingData<ImageModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = {
+                SearchPagingSource(restApi = restApi, query = query)
+            }
+        ).flow
     }
 
     override suspend fun toggleFavorite(image: ImageModel) {

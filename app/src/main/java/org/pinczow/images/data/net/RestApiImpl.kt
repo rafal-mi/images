@@ -6,7 +6,6 @@ import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-// import io.ktor.client.plugins.resources.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.pinczow.images.BuildConfig
@@ -17,23 +16,22 @@ import org.pinczow.images.feature.image.domain.model.ImageModel
 
 const val BASE_URL = "https://api.unsplash.com"
 
+val client = HttpClient(Android) {
+    install(DefaultRequest) {
+        headers.append("Accept", "application/json")
+        headers.append("Authorization", "Client-ID ${BuildConfig.API_KEY}")
+    }
+    install(ContentNegotiation) {
+        json(Json {
+            prettyPrint = true
+            isLenient = true
+            ignoreUnknownKeys = true
+        })
+    }
+}
+
 class RestApiImpl: RestApi {
     override suspend fun getImages(page: Int, perPage: Int): Resource<List<ImageModel>> {
-        val client = HttpClient(Android) {
-            // install(Resources)
-            install(DefaultRequest) {
-                headers.append("Accept", "application/json")
-                headers.append("Authorization", "Client-ID ${BuildConfig.API_KEY}")
-            }
-            install(ContentNegotiation) {
-                json(Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                })
-            }
-        }
-
         val url = "$BASE_URL/photos"
 
         return try {
@@ -50,7 +48,20 @@ class RestApiImpl: RestApi {
         }
     }
 
-    override suspend fun search(): SearchResponse {
-        TODO("Not yet implemented")
+    override suspend fun search(query: String, perPage: Int): Resource<SearchResponse> {
+        val url = "$BASE_URL/search/photos"
+
+        return try {
+            val r: SearchResponse = client.get(url) {
+                url {
+                    parameters.append("query", query)
+                    parameters.append("per_page", perPage.toString())
+                }
+            }.body()
+
+            return Success(r)
+        } catch(e: Exception) {
+            return Error(e)
+        }
     }
 }
