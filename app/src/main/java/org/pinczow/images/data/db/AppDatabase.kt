@@ -4,12 +4,12 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import org.pinczow.images.data.db.dao.ImageDao
 import org.pinczow.images.data.db.dao.RemoteKeysDao
-import org.pinczow.images.data.db.entity.Image
+import org.pinczow.images.data.db.entity.ImageEntity
 import org.pinczow.images.data.db.entity.RemoteKeys
 
 @Database(
     entities = [
-        Image::class,
+        ImageEntity::class,
         RemoteKeys::class
     ],
     version = 1
