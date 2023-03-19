@@ -17,7 +17,7 @@ import org.pinczow.images.feature.image.domain.model.ImageModel
 const val BASE_URL = "https://api.unsplash.com"
 
 class RestApiImpl: RestApi {
-    override suspend fun getImages(): Resource<List<ImageModel>> {
+    override suspend fun getImages(page: Int, perPage: Int): Resource<List<ImageModel>> {
         val client = HttpClient(Android) {
             install(DefaultRequest) {
                 headers.append("Accept", "application/json")
@@ -34,7 +34,12 @@ class RestApiImpl: RestApi {
         val url = "$BASE_URL/photos"
 
         return try {
-            val r: List<ImageModel> = client.get(url).body()
+            val r: List<ImageModel> = client.get(url) {
+                url {
+                    parameters.append("page", page.toString())
+                    parameters.append("per_page", perPage.toString())
+                }
+            }.body()
 
             return Success(r)
         } catch(e: Exception) {

@@ -5,6 +5,6 @@ import org.pinczow.images.data.db.entity.ImageEntity
 import org.pinczow.images.feature.image.domain.model.ImageModel
 
 interface RestApi {
-    suspend fun getImages(): Resource<List<ImageModel>>
+    suspend fun getImages(page: Int, perPage: Int): Resource<List<ImageModel>>
     suspend fun search(): SearchResponse
 }
