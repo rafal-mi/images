@@ -9,8 +9,9 @@ import org.pinczow.images.data.net.RestApi
 import org.pinczow.images.data.paging.UnsplashRemoteMediator
 import org.pinczow.images.feature.image.domain.model.ImageModel
 import org.pinczow.images.feature.image.domain.repository.ImageRepository
+import javax.inject.Inject
 
-class ImageRepositoryImpl(
+class ImageRepositoryImpl @Inject constructor(
     private val restApi: RestApi,
     private val database: AppDatabase
 ) : ImageRepository {
