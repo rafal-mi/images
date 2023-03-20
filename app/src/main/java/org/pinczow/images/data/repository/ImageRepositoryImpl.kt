@@ -1,8 +1,10 @@
 package org.pinczow.images.data.repository
 
+import android.util.Log
 import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.pinczow.images.App.Companion.TAG
 import org.pinczow.images.Constants.PAGE_SIZE
 import org.pinczow.images.data.db.AppDatabase
 import org.pinczow.images.data.db.entity.ImageEntity
@@ -45,8 +47,12 @@ class ImageRepositoryImpl @Inject constructor(
 
     override suspend fun toggleFavorite(image: ImageModel) {
         val newImage = image.copy()
-        newImage.favorite = image.favorite
-        database.imageDao().updateOne(ImageEntity(newImage))
+        newImage.favorite = !image.favorite
+        val imageEntity = ImageEntity(newImage)
+
+        Log.i(TAG, "Updating image $imageEntity")
+
+        database.imageDao().updateOne(imageEntity)
     }
 
 }
