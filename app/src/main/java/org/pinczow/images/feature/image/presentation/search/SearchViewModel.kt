@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.pinczow.images.feature.image.domain.model.ImageModel
 import org.pinczow.images.feature.image.domain.repository.ImageRepository
+import org.pinczow.images.feature.image.domain.use_cases.ImageUseCases
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val repository: ImageRepository
+    private val useCases: ImageUseCases
 ) : ViewModel() {
 
     private val _searchQuery = mutableStateOf("")
@@ -29,7 +30,7 @@ class SearchViewModel @Inject constructor(
 
     fun searchHeroes(query: String) {
         viewModelScope.launch {
-            repository.search(query = query).cachedIn(viewModelScope).collect {
+            useCases.search(query = query).cachedIn(viewModelScope).collect {
                 _searchedImages.value = it
             }
         }
